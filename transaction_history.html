@@ -1,0 +1,35 @@
+
+<h2>Transaction History for {{ player.user_code }}</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Action</th>
+            <th>Stock</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Sender</th>
+            <th>Receiver</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.accepted_at|date:"Y-m-d H:i:s" }}</td>
+            <td>{{ transaction.get_action_display }}</td> <!-- Either 'BUY' or 'SELL' -->
+            <td>{{ transaction.stock.stock_name }}</td>
+            <td>{{ transaction.quantity }}</td>
+            <td>{{ transaction.price }}</td>
+            <td>{{ transaction.sender.user_code }}</td>
+            <td>{{ transaction.receiver.user_code }}</td>
+            <td>{{ transaction.get_status_display }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No transactions found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

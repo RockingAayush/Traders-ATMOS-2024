@@ -1,0 +1,42 @@
+
+
+    <h2>Pending Transaction Requests</h2>
+
+    {% if pending_transactions %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sender</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in pending_transactions %}
+                    <tr>
+                        <td>{{ transaction.sender.user_code }}</td>
+                        <td>{{ transaction.stock.stock_name }}</td>
+                        <td>{{ transaction.action }}</td>
+                        <td>{{ transaction.quantity }}</td>
+                        <td>{{ transaction.price }}</td>
+                        <td>
+                            <form action="{% url 'accept_transaction' transaction.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                            <form action="{% url 'reject_transaction' transaction.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No pending transaction requests.</p>
+    {% endif %}
+
